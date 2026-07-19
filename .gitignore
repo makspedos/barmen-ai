@@ -1,3 +1,17 @@
+# env variables
 .env
+.venv
+
+# json files with cocktails
 all_cocktails.json
 backend/db/test_cocktails.json
+
+# python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.iml
+
+# IDE
+.idea/
+.vscode/

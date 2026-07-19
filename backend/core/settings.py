@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = ""
     OPENAI_API_KEY: str = ""
     PINECONE_API_KEY: str = ""
+    PINECONE_INDEX: str = ""
 
     @field_validator("ALLOWED_ORIGINS")
     def parse_allowed_origins(cls, v:str)->List[str]:
@@ -18,6 +19,3 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
-
-
-

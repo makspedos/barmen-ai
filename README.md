@@ -65,7 +65,7 @@ and preprocess it before inserterting into your vector database:
 
 Start FastAPI server:
 
-***uv run fastapi dev app/main.py***
+***uv run fastapi dev backend/app.py***
 
 Start StreamLit service:
 

@@ -27,25 +27,26 @@ async def get_prompt(prompt:str):
 async def post_prompt(data:InputQuery):
     response = await model.make_prompt(data.prompt)
     #response = await model.llm_response(data.prompt)
-    print(response)
-    model_response = response['answer']
-    if model_response is None:
-        model_response = "Please, make relevant or more understandable request."
+    #model_response = response['answer']
     cocktail_response = ""
-    for cocktail in response['cocktails']:
-        if cocktail['name']:
-            cocktail_response += f"**Name**: {cocktail['name']}\n\n"
-        if cocktail['ingredients']:
-            cocktail_response += "**Ingredients**:\n"
-            for ingredient in cocktail['ingredients']:
-                cocktail_response += f"- {ingredient}\n"
-        if cocktail['instructions']:
-            cocktail_response += "\n**Instructions**:\n"
-            for i, instruction in enumerate(cocktail['instructions'],1):
-                cocktail_response += f"{i}. {instruction}\n"
-        if cocktail['glass']:
-            cocktail_response += f"\n**Glass**: {cocktail['glass']}\n"
-        if cocktail['image']:
-            cocktail_response += f"\n![image]({cocktail['image']})\n\n"
+    if response is None:
+        model_response = "Please, make relevant or more understandable request."
+    else:
+        model_response = response['answer']
+        for cocktail in response['cocktails']:
+            if cocktail['name']:
+                cocktail_response += f"**Name**: {cocktail['name']}\n\n"
+            if cocktail['ingredients']:
+                cocktail_response += "**Ingredients**:\n"
+                for ingredient in cocktail['ingredients']:
+                    cocktail_response += f"- {ingredient}\n"
+            if cocktail['instructions']:
+                cocktail_response += "\n**Instructions**:\n"
+                for instruction in cocktail['instructions']:
+                    cocktail_response += f"{instruction}\n"
+            if cocktail['glass']:
+                cocktail_response += f"\n**Glass**: {cocktail['glass']}\n"
+            if cocktail['image']:
+                cocktail_response += f"\n![image]({cocktail['image']})\n\n"
 
     return model_response, cocktail_response
