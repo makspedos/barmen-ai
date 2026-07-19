@@ -2,6 +2,8 @@
 
 ### BarmenAI is an AI-powered cocktail assistant that recommends drinks, provides recipes, and suggests alternatives based on user queries. The project combines RAG (Retrieval-Augmented Generation) with OpenAI models to deliver accurate and context-aware cocktail suggestions.
 
+https://barmen-ai--makspedos.replit.app/ - deployed project to try 
+
 ## Features
 
 - AI assistant prompted to behave as a bartender
@@ -76,3 +78,4 @@ The Services will be available at:
 http://localhost:8000 - fastapi
 
 http://localhost:8501 - streamlit
+
