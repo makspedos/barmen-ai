@@ -12,6 +12,5 @@ for letter in string.ascii_lowercase:
     if drinks:
         all_drinks.extend(drinks)
 
-# Зберігаємо у файл
 with open("all_cocktails.json", "w", encoding="utf-8") as f:
     json.dump(all_drinks, f, ensure_ascii=False, indent=2)

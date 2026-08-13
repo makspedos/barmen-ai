@@ -60,7 +60,7 @@ PINECONE_INDEX=your_index_name
 Use below script to download cocktail data from TheCocktailDB
 and preprocess it before inserterting into your vector database:
 
-***python scripts/load_cocktails.py***
+***python cocktail_script.py***
 
 
 ### 5 Run the Service

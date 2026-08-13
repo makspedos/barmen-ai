@@ -8,7 +8,10 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     PINECONE_API_KEY: str = ""
     PINECONE_INDEX: str = ""
-
+    LANGSMITH_API_KEY:str = ""
+    LANGSMITH_TRACING:bool = None
+    LANGSMITH_PROJECT:str = ""
+    LANGSMITH_ENDPOINT:str = ""
     @field_validator("ALLOWED_ORIGINS")
     def parse_allowed_origins(cls, v:str)->List[str]:
         return v.split(",") if v else []

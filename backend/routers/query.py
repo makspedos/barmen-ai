@@ -30,7 +30,10 @@ async def post_prompt(data:InputQuery):
     #model_response = response['answer']
     cocktail_response = ""
     if response is None:
-        model_response = "Please, make relevant or more understandable request."
+        return {
+            "answer": "Please, make a relevant or more understandable request.",
+            "cocktails": [],
+        }
     else:
         model_response = response['answer']
         for cocktail in response['cocktails']:
@@ -47,6 +50,6 @@ async def post_prompt(data:InputQuery):
             if cocktail['glass']:
                 cocktail_response += f"\n**Glass**: {cocktail['glass']}\n"
             if cocktail['image']:
-                cocktail_response += f"\n![image]({cocktail['image']})\n\n"
+                cocktail_response += f"\n![image]({cocktail['image']})\n\n\n\n\n\n"
 
     return model_response, cocktail_response

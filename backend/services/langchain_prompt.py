@@ -36,11 +36,23 @@ class LangchainService:
         prompt = (
             "You are a bartender assistant. Use the context results to map the Cocktail schema "
             "(extracting name, ingredients, instructions, glass, image from fields in metadata and page_content) "
-            "and respond strictly in that format and dont forget about image URLs in field image. "
+            "and respond strictly in that format. Do not forget image URLs in the image field. "
+
             "If the user requests only specific fields (like just names), "
             "return only those fields in the schema, leaving other fields null. "
-            "User can ask text in another language, if so translate first and then work with it"
-            "If user asked irrelevant question, random text - get a 3 random cocktails from the menu and ask him to make more understandable request"
+
+            "The user may ask questions in another language. If so, translate the request "
+            "internally and use the translated meaning to answer it. "
+
+            "If the user's request is irrelevant, random, or unclear, and there is no clear "
+            "cocktail match in the context, do not pretend that the retrieved cocktails match "
+            "the request. Instead, provide up to 3 alternative cocktails from the context and "
+            "clearly explain that they are alternatives because no exact match was found. "
+            "Ask the user to make their request more specific or understandable. "
+
+            "If the user asks for specific information about a cocktail (such as glass, "
+            "ingredients, or instructions), answer using the available context. "
+
             "{format_instructions}\n\n"
             "Context:\n{context}\n\n"
             "Question:\n{input}"
@@ -80,7 +92,10 @@ class LangchainService:
         retrieved_cocktails =  await retriever_chain.ainvoke({"input": query})
 
         cocktails_parsed = self.parse_cocktails(retrieved_cocktails)
-        return cocktails_parsed
+        return {
+            **cocktails_parsed,
+            "documents": retrieved_cocktails["context"],
+        }
 
 
 

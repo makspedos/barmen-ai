@@ -26,7 +26,10 @@ def get_response_from_fastapi(prompt:str):
 st.title("Select your drink")
 
 with st.form("prompt_form"):
-    prompt = st.text_input("What you want for today, my friend ?")
+    prompt = st.text_input(
+        "What would you like today? Ask me about cocktails, ingredients, "
+        "or cocktail preparation instructions."
+    )
 
     submit = st.form_submit_button("Ask")
     if submit:
