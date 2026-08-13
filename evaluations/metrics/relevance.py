@@ -24,7 +24,7 @@ grader_llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY")
 # Evaluator
 def relevance(inputs: dict, outputs: dict) -> dict:
     """A simple evaluator for RAG answer helpfulness."""
-    answer = f"QUESTION: {inputs['question']}\nSTUDENT ANSWER: {outputs['answer']}"
+    answer = f"QUESTION: {inputs['question']}\nBARMEN ANSWER: {outputs['answer']}"
     grade = grader_llm.invoke([
         {"role": "system", "content": relevance_instructions},
         {"role": "user", "content": answer}

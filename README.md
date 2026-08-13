@@ -44,6 +44,7 @@ https://barmen-ai--makspedos.replit.app/ - deployed project to try
 ***cd BarmenAI***
 
 ### 2. Install dependencies with uv
+
 ***uv sync***
 
 ### 3. Prepare environment variables
@@ -58,7 +59,7 @@ PINECONE_INDEX=your_index_name
 
 ### 4. Load CocktailAPI dataset
 Use below script to download cocktail data from TheCocktailDB
-and preprocess it before inserterting into your vector database:
+and preprocess it before inserting into your vector database:
 
 ***python cocktail_script.py***
 

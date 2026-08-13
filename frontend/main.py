@@ -13,6 +13,7 @@ def get_response_from_fastapi(prompt:str):
         print("BODY:", repr(response.text))
 
         response.raise_for_status()
+
     try:
         data = response.json()
     except requests.exceptions.JSONDecodeError:
@@ -33,10 +34,34 @@ with st.form("prompt_form"):
 
     submit = st.form_submit_button("Ask")
     if submit:
-        if not prompt.strip():
-            st.warning("Please provide some information first 🙂")
+        try:
+            if not prompt.strip():
+                st.warning("Please provide some information first 🙂")
 
-        else:
-            model_response, cocktail_response = get_response_from_fastapi(prompt)
-            st.write(model_response)
-            st.write(cocktail_response)
+            else:
+                model_response, cocktail_response = get_response_from_fastapi(prompt)
+                st.write(model_response)
+                st.markdown(cocktail_response)
+
+        except requests.exceptions.ConnectionError:
+            st.error(
+                "The bartender is currently unavailable. "
+                "Please try again later."
+            )
+
+        except requests.exceptions.Timeout:
+            st.error(
+                "The bartender is taking too long to respond. "
+                "Please try again in a moment."
+            )
+
+        except requests.exceptions.HTTPError:
+            st.error(
+                "Something went wrong while contacting the bartender. "
+                "Please try again later."
+            )
+
+        except requests.exceptions.RequestException:
+            st.error(
+                "Sorry, something went wrong. Please try again later."
+            )

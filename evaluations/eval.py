@@ -39,6 +39,7 @@ def predict_rag_answer(data: dict):
         if cocktail.get("glass"):
             cocktail_response += f"\nGlass: {cocktail['glass']}\n"
 
+    cocktail_response+="\n\n\n"
     return {
         "answer": model_response + "\n" + cocktail_response,
         "documents": response['documents']

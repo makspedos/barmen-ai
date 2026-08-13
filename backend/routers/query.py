@@ -36,7 +36,7 @@ async def post_prompt(data:InputQuery):
         }
     else:
         model_response = response['answer']
-        for cocktail in response['cocktails']:
+        for i, cocktail in enumerate(response['cocktails']):
             if cocktail['name']:
                 cocktail_response += f"**Name**: {cocktail['name']}\n\n"
             if cocktail['ingredients']:
@@ -50,6 +50,10 @@ async def post_prompt(data:InputQuery):
             if cocktail['glass']:
                 cocktail_response += f"\n**Glass**: {cocktail['glass']}\n"
             if cocktail['image']:
-                cocktail_response += f"\n![image]({cocktail['image']})\n\n\n\n\n\n"
+                cocktail_response += f"\n![image]({cocktail['image']})\n"
+            cocktail_response+='\n\n'
+            # Space between cocktails
+            if i < len(response['cocktails']) - 1:
+                cocktail_response += "\n\n---\n\n"
 
     return model_response, cocktail_response

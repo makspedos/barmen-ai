@@ -29,7 +29,7 @@ class LangchainService:
     def __init__(self):
         self.embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
         self.vector_store = PineconeVectorStore(index=dense_index, embedding=self.embeddings)
-        self.llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
         self.parser = PydanticOutputParser(pydantic_object=CocktailList)
 
     def get_prompt_instructions(self):
@@ -38,20 +38,36 @@ class LangchainService:
             "(extracting name, ingredients, instructions, glass, image from fields in metadata and page_content) "
             "and respond strictly in that format. Do not forget image URLs in the image field. "
 
+            "Use ONLY information supported by the provided context. "
+            "Do not invent cocktail names, ingredients, properties, explanations, or other facts. "
+
+            "When the user specifies requirements, treat them as constraints. "
+            "Prioritize cocktails that satisfy ALL explicit requirements. "
+            "Do not recommend a cocktail that clearly violates an explicit user constraint. "
+            "If multiple cocktails satisfy the requirements, you may recommend multiple matching cocktails. "
+            "If a cocktail in the context clearly satisfies the user's requirements, do not omit it. "
+
             "If the user requests only specific fields (like just names), "
             "return only those fields in the schema, leaving other fields null. "
 
             "The user may ask questions in another language. If so, translate the request "
-            "internally and use the translated meaning to answer it. "
+            "internally and use the translated meaning to search and answer the question. "
 
-            "If the user's request is irrelevant, random, or unclear, and there is no clear "
-            "cocktail match in the context, do not pretend that the retrieved cocktails match "
-            "the request. Instead, provide up to 3 alternative cocktails from the context and "
-            "clearly explain that they are alternatives because no exact match was found. "
-            "Ask the user to make their request more specific or understandable. "
+            "If the user's request is irrelevant, random, or unclear, first determine whether "
+            "any cocktail in the context meaningfully matches the request. "
+            "If there is no meaningful match, do not pretend that the retrieved cocktails match. "
+            "Instead, provide up to 3 alternative cocktails from the context and clearly explain "
+            "that they are alternatives. Ask the user to make their request more specific or understandable. "
 
-            "If the user asks for specific information about a cocktail (such as glass, "
-            "ingredients, or instructions), answer using the available context. "
+            "If the user asks for a specific cocktail or specific information about a cocktail "
+            "(such as glass, ingredients, or instructions), answer using the available context. "
+
+            "If no cocktail in the context satisfies the user's requirements, do not claim that "
+            "one does. You may provide alternatives only if they are clearly identified as alternatives. "
+
+            "When the user explicitly excludes something (for example, a cocktail containing "
+            "a particular ingredient or a cocktail whose name contains a particular word), "
+            "respect that exclusion even if the cocktail otherwise matches the request. "
 
             "{format_instructions}\n\n"
             "Context:\n{context}\n\n"
@@ -87,7 +103,7 @@ class LangchainService:
     async def make_prompt(self, query):
         prompt_template = self.get_prompt_instructions()
         question_answer_chain = create_stuff_documents_chain(llm=self.llm, prompt=prompt_template)
-        retriever = self.vector_store.as_retriever(search_type="similarity")
+        retriever = self.vector_store.as_retriever(search_type="similarity", search_kwargs={"k":10})
         retriever_chain = create_retrieval_chain(retriever, question_answer_chain)
         retrieved_cocktails =  await retriever_chain.ainvoke({"input": query})
 
