@@ -29,7 +29,7 @@ class LangchainService:
     def __init__(self):
         self.embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
         self.vector_store = PineconeVectorStore(index=dense_index, embedding=self.embeddings)
-        self.llm = ChatOpenAI(model="gpt-4-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
+        self.llm = ChatOpenAI(model="gpt-4o-mini", api_key=os.getenv("OPENAI_API_KEY"), temperature=0)
         self.parser = PydanticOutputParser(pydantic_object=CocktailList)
 
     def get_prompt_instructions(self):
