@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 def get_response_from_fastapi(prompt:str):
-    response = requests.post("http://localhost:8000/query/prompt/", json={"prompt":prompt})
+    response = requests.post(f"{os.getenv('BACKEND_URL')}/query/prompt/", json={"prompt":prompt})
     if not response.ok:
         print("FastAPI error")
         print("STATUS:", response.status_code)

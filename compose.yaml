@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: DockerFile
+    command: uv run fastapi dev backend/app.py --host ${FASTAPI_HOST} --port ${FASTAPI_PORT}
+    environment:
+      - FASTAPI_HOST=${FASTAPI_HOST}
+      - FASTAPI_PORT=${FASTAPI_PORT}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
+      - PINECONE_INDEX=${PINECONE_INDEX}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      - LANGSMITH_TRACING=${LANGSMITH_TRACING}
+      - LANGSMITH_PROJECT=${LANGSMITH_PROJECT}
+      - LANGSMITH_ENDPOINT=${LANGSMITH_ENDPOINT}
+
+    ports:
+      - "${FASTAPI_PORT}:${FASTAPI_PORT}"
+  frontend:
+    build:
+      context: .
+      dockerfile: DockerFile
+    command: uv run streamlit run frontend/main.py --server.address ${STREAMLIT_HOST} --server.port ${STREAMLIT_PORT}
+    environment:
+      - STREAMLIT_HOST=${STREAMLIT_HOST}
+      - STREAMLIT_PORT=${STREAMLIT_PORT}
+      - BACKEND_URL=${BACKEND_URL}
+
+    ports:
+      - "${STREAMLIT_PORT}:${STREAMLIT_PORT}"
+    depends_on:
+      - backend
