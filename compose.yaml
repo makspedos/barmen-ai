@@ -14,7 +14,12 @@ services:
       - LANGSMITH_TRACING=${LANGSMITH_TRACING}
       - LANGSMITH_PROJECT=${LANGSMITH_PROJECT}
       - LANGSMITH_ENDPOINT=${LANGSMITH_ENDPOINT}
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:$${FASTAPI_PORT}/docs || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     ports:
       - "${FASTAPI_PORT}:${FASTAPI_PORT}"
   frontend:
@@ -26,8 +31,9 @@ services:
       - STREAMLIT_HOST=${STREAMLIT_HOST}
       - STREAMLIT_PORT=${STREAMLIT_PORT}
       - BACKEND_URL=${BACKEND_URL}
-
     ports:
       - "${STREAMLIT_PORT}:${STREAMLIT_PORT}"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+        restart: true
