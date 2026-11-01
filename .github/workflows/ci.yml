@@ -31,9 +31,9 @@ jobs:
       OPENAI_API_KEY: ci-placeholder
       PINECONE_API_KEY: ci-placeholder
       PINECONE_INDEX: ci-placeholder
-      LANGSMITH_API_KEY: ci-placeholder
-      LANGSMITH_TRACING: "false"
-      LANGSMITH_PROJECT: ci-placeholder
+      LANGSMITH_API_KEY: ${{secrets.LANGSMITH_API_KEY }}
+      LANGSMITH_TRACING: "true"
+      LANGSMITH_PROJECT: "my-rag-project"
       LANGSMITH_ENDPOINT: https://eu.api.smith.langchain.com
       
     steps:
