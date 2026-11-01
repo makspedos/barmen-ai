@@ -2,7 +2,6 @@ from typing_extensions import Annotated, TypedDict
 import os
 from langchain_openai import ChatOpenAI
 
-# Grade output schema
 class RetrievalRelevanceGrade(TypedDict):
     explanation: Annotated[str, ..., "Explain your reasoning for the score"]
     relevant: Annotated[

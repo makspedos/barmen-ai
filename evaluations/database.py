@@ -1,4 +1,19 @@
+"""
+Barman - RAG Evaluation Dataset
+
+This module defines a collection of test cases used to evaluate
+the Barman RAG system using LangSmith.
+
+Each test case contains:
+    - inputs: A user question submitted to the RAG system.
+    - outputs: The expected answer used as a reference during evaluation.
+
+The dataset is used across multiple evaluation metrics to assess
+the quality and accuracy of the generated responses.
+"""
+
 from langsmith import Client
+
 
 client = Client()
 

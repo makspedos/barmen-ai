@@ -1,9 +1,28 @@
+
+"""
+Barman - Streamlit Frontend
+
+This module implements the user interface for the Barman
+cocktail assistant using Streamlit.
+
+Users can submit natural-language prompts to ask about
+cocktails, ingredients, and preparation instructions.
+
+The frontend sends prompts to the FastAPI backend and
+displays the returned responses.
+
+It also handles communication errors and provides
+user-friendly error messages.
+"""
+
 import streamlit as st
 import requests
 import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+
 
 def get_response_from_fastapi(prompt:str):
     response = requests.post(f"{os.getenv('BACKEND_URL')}/query/prompt/", json={"prompt":prompt})

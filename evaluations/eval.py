@@ -8,7 +8,9 @@ from evaluations.metrics.relevance import relevance
 from evaluations.metrics.retrieval_relevance import retrieval_relevance
 from evaluations.metrics.groundedness import groundedness
 
+
 model = LangchainService()
+
 def predict_rag_answer(data: dict):
     response = asyncio.run(model.make_prompt(data["question"]))
 
