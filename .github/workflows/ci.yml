@@ -32,7 +32,7 @@ jobs:
       PINECONE_API_KEY: ci-placeholder
       PINECONE_INDEX: ci-placeholder
       LANGSMITH_API_KEY: ci-placeholder
-      LANGSMITH_TRACING: "true"
+      LANGSMITH_TRACING: "false"
       LANGSMITH_PROJECT: ci-placeholder
       LANGSMITH_ENDPOINT: https://eu.api.smith.langchain.com
       
