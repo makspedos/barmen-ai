@@ -47,6 +47,13 @@ jobs:
       run: docker compose build
     - name: Start services
       run: docker compose up -d --wait-timeout 120
+    - name: Wait and test frontend
+      run: |
+        sleep 10
+        docker compose ps -a
+        docker compose logs --tail=100 frontend
+        docker compose exec -T frontend \
+          curl -v http://localhost:8501/_stcore/health
     - name: Debug frontend
       if: always()
       run: |
