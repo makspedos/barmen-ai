@@ -46,8 +46,17 @@ jobs:
     - name: Build Docker images
       run: docker compose build
     - name: Start services
-      run: docker compose up -d --wait
-
+      run: docker compose up -d --wait-timeout 120
+    - name: Debug frontend
+      if: always()
+      run: |
+        echo "=== Container status ==="
+        docker compose ps -a
+        echo "=== Frontend logs ==="
+        docker compose logs --no-color frontend
+        echo "=== Backend logs ==="
+        docker compose logs --no-color backend
+        
     - name: Check backend
       run: |
         curl --fail --retry 5 --retry-connrefused \
